@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CTABand, PageHero, ProductCard, ProductIcon, SectionHeading, StatusBadge, usePageTitle } from '../components/ui';
+import Icon from '../components/Icon';
+import { CTABand, PageHero, ProductCard, ProductIcon, Reveal, SectionHeading, StatusBadge, usePageTitle } from '../components/ui';
 import { IMAGES } from '../data/images';
 import { PRODUCTS } from '../data/products';
 
@@ -15,10 +16,20 @@ const ProductsPage = () => {
             </PageHero>
 
             <section className="container-x section">
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {PRODUCTS.map((p, i) => (
-                        <ProductCard key={p.slug} product={p} delay={(i % 3) * 80} />
+                        <ProductCard key={p.slug} product={p} delay={(i % 4) * 80} />
                     ))}
+                    <Reveal delay={240} className="h-full">
+                        <Link
+                            to="/contact"
+                            className="group flex h-full flex-col justify-center rounded-xl border-2 border-dashed border-slate-300 p-5 text-center transition hover:border-brand-400 hover:bg-slate-50"
+                        >
+                            <Icon name="sparkles" size={34} className="mx-auto transition group-hover:scale-110" />
+                            <p className="mt-2 font-bold text-ink">Need something else?</p>
+                            <p className="mt-1 text-sm text-slate-700">Tell us your line of business — we build on the same platform.</p>
+                        </Link>
+                    </Reveal>
                 </div>
             </section>
 

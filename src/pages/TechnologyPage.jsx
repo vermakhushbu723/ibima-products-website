@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { CTABand, FeatureCard, IconTile, PageHero, Reveal, SectionHeading, usePageTitle } from '../components/ui';
@@ -14,6 +14,7 @@ const WorkflowViewer = () => {
     const [active, setActive] = useState(0);
     const [playing, setPlaying] = useState(true);
     const [full, setFull] = useState(false);
+    const listRef = useRef(null);
     const step = WORKFLOW[active];
     const product = getProduct(step.product);
 
@@ -33,6 +34,15 @@ const WorkflowViewer = () => {
             document.body.style.overflow = '';
         };
     }, [full]);
+
+    // On phones the step list is a horizontal strip — keep the active
+    // chip in view by scrolling the strip itself (never the page).
+    useEffect(() => {
+        const ol = listRef.current;
+        if (!ol || ol.scrollWidth <= ol.clientWidth) return;
+        const li = ol.children[active];
+        ol.scrollTo({ left: li.offsetLeft - ol.clientWidth / 2 + li.offsetWidth / 2, behavior: 'smooth' });
+    }, [active]);
 
     const go = (i) => {
         setActive((i + WORKFLOW.length) % WORKFLOW.length);
@@ -70,16 +80,16 @@ const WorkflowViewer = () => {
 
                 <div className="grid lg:grid-cols-[minmax(0,19rem)_1fr]">
                     {/* Step list */}
-                    <ol className="max-h-[26rem] overflow-y-auto border-b border-slate-200 p-2 lg:max-h-none lg:border-r lg:border-b-0">
+                    <ol ref={listRef} className="flex gap-1.5 overflow-x-auto border-b border-slate-200 p-2 [scrollbar-width:none] lg:block lg:overflow-visible lg:border-r lg:border-b-0">
                         {WORKFLOW.map((s, i) => {
                             const p = getProduct(s.product);
                             const on = i === active;
                             return (
-                                <li key={s.title}>
+                                <li key={s.title} className="shrink-0">
                                     <button
                                         type="button"
                                         onClick={() => go(i)}
-                                        className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition ${on ? 'bg-brand-50 ring-1 ring-brand-200' : 'hover:bg-slate-50'}`}
+                                        className={`flex w-max items-center gap-2 rounded-lg px-2.5 py-1.5 text-left transition lg:w-full lg:gap-3 lg:px-3 lg:py-2 ${on ? 'bg-brand-50 ring-1 ring-brand-200' : 'hover:bg-slate-50'}`}
                                     >
                                         <span
                                             className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${
@@ -88,9 +98,9 @@ const WorkflowViewer = () => {
                                         >
                                             {i < active ? <Icon name="tick" size={12} strokeWidth={3} /> : i + 1}
                                         </span>
-                                        <span className="min-w-0 flex-1">
-                                            <span className={`block truncate text-[13px] font-semibold ${on ? 'text-brand-700' : 'text-slate-800'}`}>{s.title}</span>
-                                            <span className="block truncate text-[11px] text-slate-500">{p.name}</span>
+                                        <span className="min-w-0 lg:flex-1">
+                                            <span className={`block text-[13px] font-semibold whitespace-nowrap lg:truncate ${on ? 'text-brand-700' : 'text-slate-800'}`}>{s.title}</span>
+                                            <span className="hidden truncate text-[11px] text-slate-500 lg:block">{p.name}</span>
                                         </span>
                                     </button>
                                 </li>
@@ -214,7 +224,8 @@ const TechnologyPage = () => {
             <section className="section bg-slate-50">
                 <div className="container-x">
                     <SectionHeading eyebrow="Claim workflow" title="See how a claim moves through iBima">
-                        An interactive look at the end-to-end claim — tap any step, or let it play.
+                        An interactive look at the end-to-end claim — tap any step, or let it play. For the full system view, see the{' '}
+                        <Link to="/architecture" className="font-semibold text-brand-700 underline underline-offset-2">claims architecture</Link>.
                     </SectionHeading>
                     <Reveal>
                         <WorkflowViewer />

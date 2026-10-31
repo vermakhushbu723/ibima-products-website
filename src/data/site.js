@@ -17,6 +17,7 @@ export const NAV_LINKS = [
     { label: 'Home', to: '/' },
     { label: 'Products', to: '/products' },
     { label: 'Technology', to: '/technology' },
+    { label: 'Architecture', to: '/architecture' },
     { label: 'How it Works', to: '/how-it-works' },
     { label: 'About', to: '/about' },
     { label: 'FAQs', to: '/faqs' },

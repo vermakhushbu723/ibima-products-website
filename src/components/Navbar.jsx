@@ -9,7 +9,7 @@ import { StatusBadge } from './ui';
 // Desktop link: dark, semibold, with an underline that grows in when
 // hovered and stays put on the active page.
 const deskCls = ({ isActive }) =>
-    `relative px-3 py-2 text-[14px] font-semibold transition-colors after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:origin-left after:rounded-full after:bg-brand-600 after:transition-transform after:duration-300 ${
+    `relative px-2 py-2 text-[13.5px] font-semibold xl:px-3 xl:text-[14px] transition-colors after:absolute after:inset-x-2 xl:after:inset-x-3 after:-bottom-px after:h-0.5 after:origin-left after:rounded-full after:bg-brand-600 after:transition-transform after:duration-300 ${
         isActive ? 'text-brand-700 after:scale-x-100' : 'text-slate-800 after:scale-x-0 hover:text-brand-700 hover:after:scale-x-100'
     }`;
 
