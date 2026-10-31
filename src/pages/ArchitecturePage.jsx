@@ -234,7 +234,7 @@ const ArchitecturePage = () => {
                 </ul>
             </div>
 
-            <div className="bg-white">
+            <div className="bg-white pt-10 sm:pt-14">
                 <CTABand title="Walk through this architecture with us" body="A live demo of each stage on the iBima apps — and an honest view of what is live, configurable and planned." />
             </div>
 
